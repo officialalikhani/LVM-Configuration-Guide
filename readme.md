@@ -31,141 +31,128 @@ LVM is usually pre-installed on most Linux distributions. However, if it's not a
 
 ```shell
 sudo apt-get install lvm2
-
+```
 Creating Physical Volumes
 
-    Identify the disks or partitions you want to use as physical volumes:
+Identify the disks or partitions you want to use as physical volumes:
 
-shell
-
+```shell
 sudo fdisk -l
+```
+Create physical volumes using the pvcreate command:
 
-    Create physical volumes using the pvcreate command:
-
-shell
-
+```shell
 sudo pvcreate /dev/sdb1 /dev/sdc1
+```
+Verify the creation of physical volumes:
 
-    Verify the creation of physical volumes:
-
-shell
-
+```shell
 sudo pvdisplay
-
+```
 Creating Volume Groups
 
-    Create a volume group using the vgcreate command:
+Create a volume group using the vgcreate command:
 
-shell
-
+```shell
 sudo vgcreate myvg /dev/sdb1 /dev/sdc1
+```
+Verify the creation of volume groups:
 
-    Verify the creation of volume groups:
-
-shell
-
+```shell
 sudo vgdisplay
+```
 
 Creating Logical Volumes
 
-    Create a logical volume using the lvcreate command:
+Create a logical volume using the lvcreate command:
 
-shell
-
+```shell
 sudo lvcreate -L 10G -n mylv myvg
+```
+Verify the creation of logical volumes:
 
-    Verify the creation of logical volumes:
-
-shell
-
+```shell
 sudo lvdisplay
+```
 
-Resizing Logical Volumes
-Decreasing Logical Volumes
+# Resizing Logical Volumes
+## Decreasing Logical Volumes
 
-    Unmount the logical volume (if mounted) and perform a file system check:
+Unmount the logical volume (if mounted) and perform a file system check:
 
-shell
-
+```shell
 sudo umount /dev/myvg/mylv
 sudo e2fsck -f /dev/myvg/mylv
+```
 
-    Resize the file system to a smaller size:
+Resize the file system to a smaller size:
 
-shell
+```shell
 
 sudo resize2fs /dev/myvg/mylv 5G
+```
+Resize the logical volume to the desired size:
 
-    Resize the logical volume to the desired size:
-
-shell
+```shell
 
 sudo lvreduce -L 5G /dev/myvg/mylv
+```
+Mount the logical volume again:
 
-    Mount the logical volume again:
-
-shell
+```shell
 
 sudo mount /dev/myvg/mylv /mnt/mylv
-
+```
 Increasing Logical Volumes
 
-    Unmount the logical volume (if mounted) and perform a file system check:
+Unmount the logical volume (if mounted) and perform a file system check:
 
-shell
+```shell
 
 sudo umount /dev/myvg/mylv
 sudo e2fsck -f /dev/myvg/mylv
+```
+Resize the logical volume to a larger size:
 
-    Resize the logical volume to a larger size:
-
-shell
-
+```shell
 sudo lvextend -L +5G /dev/myvg/mylv
+```
 
-    Resize the file system to match the new size:
+Resize the file system to match the new size:
 
-shell
-
+```shell
 sudo resize2fs /dev/myvg/mylv
+```
 
-    Mount the logical volume again:
+Mount the logical volume again:
 
-shell
-
+```shell
 sudo mount /dev/myvg/mylv /mnt/mylv
+```
 
 Mounting Logical Volumes
 
-    Create a file system on the logical volume:
+Create a file system on the logical volume:
 
-shell
+```shell
 
 sudo mkfs.ext4 /dev/myvg/mylv
+```
 
-    Create a mount point directory:
+Create a mount point directory:
 
-shell
-
+```shell
 sudo mkdir /mnt/mylv
+```
 
-    Mount the logical volume to the mount point:
+Mount the logical volume to the mount point:
 
-shell
-
+```shell
 sudo mount /dev/myvg/mylv /mnt/mylv
+```
+Add an entry to /etc/fstab to mount the logical volume automatically on system boot:
 
-    Add an entry to /etc/fstab to mount the logical volume automatically on system boot:
-
-shell
-
+```shell
 /dev/myvg/mylv   /mnt/mylv   ext4   defaults   0   0
+```
 
-Conclusion
-
-Congratulations! You have successfully configured LVM, created logical volumes, and learned how to resize them on your Linux system. With LVM, you can now effectively manage disk space and perform advanced storage management.
-
-For more advanced configuration options and features, refer to the LVM documentation and explore additional LVM commands.
-
-
-This updated version now includes sections on decreasing and increasing logical volumes, providing instructions on how to resize the volumes accordingly.
