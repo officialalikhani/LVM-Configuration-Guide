@@ -103,7 +103,7 @@ Mount the logical volume again:
 
 sudo mount /dev/myvg/mylv /mnt/mylv
 ```
-Increasing Logical Volumes
+## Increasing Logical Volumes
 
 Unmount the logical volume (if mounted) and perform a file system check:
 
